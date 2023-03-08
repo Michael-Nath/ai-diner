@@ -2,6 +2,7 @@ from env_utils import *
 import numpy as np
 import gymnasium as gym
 from typing import List
+from collections import namedtuple, deque
 
 # DINING_HALL_OPENING_HOUR = 5
 # DINING_HALL_CLOSING_HOUR = 10
@@ -78,11 +79,19 @@ class DiningHall:
 #         else:
 #             for dining_hall in self.dining_halls:
 #                 dining_hall.prep_for_next_day()
-
+Transition = namedtuple("Transition", ("state", "action", "next_state", "reward"))
 
 class ReplayBuffer:
-    def __init__(self) -> None:
-        pass
+
+    
+    def __init__(self, capacity: int) -> None:
+        self.memory = deque([], maxlen=capacity)
+        
+    def push(self, *args) -> None:
+        """Save a transition"""
+        self.memory.append(Transition(*args))
+    def sample(self, batch_size) -> list[Transition]:
+        return np.random.choice(self.memory, batch_size)
 
 class DiningHallEnv(gym.Env):
     def __init__(self,
