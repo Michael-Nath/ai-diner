@@ -14,5 +14,5 @@ def populate_proportionately(probs: np.ndarray, num_diners: int) -> np.ndarray:
 def dining_times_random(num_diners: int, dining_times_count: int) -> List[int]:
     return np.floor(np.random.rand(num_diners) * dining_times_count)
 
-def reward_short_waits(num_diners: int, received_special: bool) -> float:
-    return -(1 / max(0.1, 0.1 * num_diners)) + 10 * received_special
+def reward_short_waits(num_diners: int, received_special: bool, visited_hall_twice: bool) -> float:
+    return (1 / max(0.1, 0.1 * num_diners)) + 10 * received_special + (-1000 * visited_hall_twice)
